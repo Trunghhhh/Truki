@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHÙNG ĐÔN KIÊN — MISSION THPT 2026 | Kỹ sư Tự động hóa</title>
+  <meta name="description" content="Hệ thống đếm ngược kỳ thi THPT 2026 cho Phùng Đôn Kiên — Kỹ sư Tự động hóa tương lai. Ngành Kỹ thuật Tự động hóa, khối A1." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- CANVAS BACKGROUND                                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<canvas id="bgCanvas"></canvas>
+<div id="particles-js"></div>
+<div class="scan-line"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="cursor-trail-container" id="cursorTrailContainer"></div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- INTRO SCREEN                                            -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="introScreen">
+  <canvas id="introCanvas"></canvas>
+  <div class="intro-content">
+    <div class="intro-logo" id="introLogo">
+      <div class="logo-ring ring-1"></div>
+      <div class="logo-ring ring-2"></div>
+      <div class="logo-ring ring-3"></div>
+      <div class="logo-core">
+        <span class="logo-icon">⚙</span>
+      </div>
+    </div>
+    <div class="intro-mission-tag">
+      <span class="mission-prefix">// SYSTEM BOOT </span>
+      <span class="mission-blink">_</span>
+    </div>
+    <h1 class="intro-name" id="introName"></h1>
+    <p class="intro-subtitle" id="introSubtitle"></p>
+    <div class="intro-mission-box">
+      <div class="mission-border-tl"></div>
+      <div class="mission-border-br"></div>
+      <span id="introMission"></span>
+    </div>
+    <div class="intro-status-bar">
+      <div class="status-item">
+        <span class="status-dot active"></span>
+        <span>KHỐI A1</span>
+      </div>
+      <div class="status-item">
+        <span class="status-dot active"></span>
+        <span>THPT 2026</span>
+      </div>
+      <div class="status-item">
+        <span class="status-dot active"></span>
+        <span>KỸ THUẬT TỰ ĐỘNG HÓA</span>
+      </div>
+    </div>
+    <button class="intro-btn" id="introBtn" onclick="startMainSite()">
+      <span class="btn-glow"></span>
+      <span class="btn-text">[ KHỞI ĐỘNG HỆ THỐNG ]</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- MAIN SITE                                               -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="mainSite" class="hidden">
+
+  <!-- NAV -->
+  <nav class="cyber-nav">
+    <div class="nav-logo" id="navLogo" onclick="handleLogoClick()">
+      <div class="nav-logo-ring"></div>
+      <span class="nav-logo-icon">⚙</span>
+    </div>
+    <div class="nav-title">
+      <span class="nav-name">PHÙNG ĐÔN KIÊN</span>
+      <span class="nav-sub">AUTO-ENG SYSTEM v2.6.0</span>
+    </div>
+    <div class="nav-links">
+      <a href="#countdown" class="nav-link">COUNTDOWN</a>
+      <a href="#schedule" class="nav-link">LỊCH THI</a>
+      <a href="#status" class="nav-link">STATUS</a>
+      <a href="#missions" class="nav-link">NHIỆM VỤ</a>
+    </div>
+    <div class="nav-time" id="navTime"></div>
+  </nav>
+
+  <!-- OVERDRIVE BANNER -->
+  <div id="overdriveBanner" class="hidden">
+    <div class="overdrive-text">⚠ OVERDRIVE MODE ACTIVATED ⚠</div>
+    <div class="overdrive-sub">FINAL EXAM INCOMING. MAXIMUM PERFORMANCE REQUIRED.</div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-hud-left">
+      <div class="hud-item">STUDENT_ID: PDK-2026-A1</div>
+      <div class="hud-item">TARGET: KỸ THUẬT TỰ ĐỘNG HÓA</div>
+      <div class="hud-item">BLOCK: A1 [TOÁN-LÝ-ANH]</div>
+      <div class="hud-item">STATUS: <span class="text-neon">ACTIVE</span></div>
+    </div>
+    <div class="hero-center">
+      <div class="hero-ring-system">
+        <div class="hero-ring hr1"></div>
+        <div class="hero-ring hr2"></div>
+        <div class="hero-ring hr3"></div>
+        <div class="hero-core-icon">⚙</div>
+      </div>
+      <h1 class="hero-name">PHÙNG ĐÔN KIÊN</h1>
+      <p class="hero-title">Kỹ sư Tự động hóa tương lai</p>
+      <div class="hero-badges">
+        <span class="badge">TOÁN</span>
+        <span class="badge">VẬT LÍ</span>
+        <span class="badge">TIẾNG ANH</span>
+      </div>
+    </div>
+    <div class="hero-hud-right">
+      <div class="hud-item">SYSTEM: ONLINE</div>
+      <div class="hud-item">FOCUS: <span class="text-cyan">HIGH</span></div>
+      <div class="hud-item">ENERGY: <span class="text-neon">MAX</span></div>
+      <div class="hud-item">RANK: <span class="text-gold">ELITE</span></div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN SECTION -->
+  <section class="section" id="countdown">
+    <div class="section-header">
+      <div class="section-tag">// MODULE 01</div>
+      <h2 class="section-title">THỜI GIAN CÒN LẠI ĐẾN KỲ THI THPT 2026</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="countdown-container" id="countdownContainer">
+      <div class="cd-energy-ring cder1"></div>
+      <div class="cd-energy-ring cder2"></div>
+      <div class="cd-energy-ring cder3"></div>
+
+      <div class="countdown-grid">
+        <div class="cd-unit" id="cdDays">
+          <div class="cd-circuit-border">
+            <div class="cbc tl"></div>
+            <div class="cbc tr"></div>
+            <div class="cbc bl"></div>
+            <div class="cbc br"></div>
+          </div>
+          <div class="cd-inner">
+            <div class="cd-pulse-ring"></div>
+            <div class="cd-number" id="cdDaysNum">00</div>
+            <div class="cd-bar">
+              <div class="cd-bar-fill" id="cdDaysBar"></div>
+            </div>
+          </div>
+          <div class="cd-label">NGÀY</div>
+          <div class="cd-label-en">DAYS</div>
+        </div>
+
+        <div class="cd-sep"><div class="sep-dots"><span></span><span></span></div></div>
+
+        <div class="cd-unit" id="cdHours">
+          <div class="cd-circuit-border">
+            <div class="cbc tl"></div>
+            <div class="cbc tr"></div>
+            <div class="cbc bl"></div>
+            <div class="cbc br"></div>
+          </div>
+          <div class="cd-inner">
+            <div class="cd-pulse-ring"></div>
+            <div class="cd-number" id="cdHoursNum">00</div>
+            <div class="cd-bar">
+              <div class="cd-bar-fill" id="cdHoursBar"></div>
+            </div>
+          </div>
+          <div class="cd-label">GIỜ</div>
+          <div class="cd-label-en">HOURS</div>
+        </div>
+
+        <div class="cd-sep"><div class="sep-dots"><span></span><span></span></div></div>
+
+        <div class="cd-unit" id="cdMins">
+          <div class="cd-circuit-border">
+            <div class="cbc tl"></div>
+            <div class="cbc tr"></div>
+            <div class="cbc bl"></div>
+            <div class="cbc br"></div>
+          </div>
+          <div class="cd-inner">
+            <div class="cd-pulse-ring"></div>
+            <div class="cd-number" id="cdMinsNum">00</div>
+            <div class="cd-bar">
+              <div class="cd-bar-fill" id="cdMinsBar"></div>
+            </div>
+          </div>
+          <div class="cd-label">PHÚT</div>
+          <div class="cd-label-en">MINUTES</div>
+        </div>
+
+        <div class="cd-sep"><div class="sep-dots"><span></span><span></span></div></div>
+
+        <div class="cd-unit" id="cdSecs">
+          <div class="cd-circuit-border">
+            <div class="cbc tl"></div>
+            <div class="cbc tr"></div>
+            <div class="cbc bl"></div>
+            <div class="cbc br"></div>
+          </div>
+          <div class="cd-inner">
+            <div class="cd-pulse-ring pulse-fast"></div>
+            <div class="cd-number" id="cdSecsNum">00</div>
+            <div class="cd-bar">
+              <div class="cd-bar-fill cd-bar-sec" id="cdSecsBar"></div>
+            </div>
+          </div>
+          <div class="cd-label">GIÂY</div>
+          <div class="cd-label-en">SECONDS</div>
+        </div>
+      </div>
+
+      <div class="cd-status-row">
+        <div class="cd-status-item">
+          <span class="cds-dot"></span>
+          <span id="cdStatusText">EXAM DATE: 11/06/2026 — 07:35 ICT | MÔN: TOÁN (KHỐI A1)</span>
+        </div>
+        <div class="cd-status-item">
+          <span class="cds-dot anim"></span>
+          <span>REAL-TIME SYNC ACTIVE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPECIAL MODE ALERT -->
+    <div id="specialModeAlert" class="special-alert hidden">
+      <div class="sa-icon">⚠</div>
+      <div class="sa-text" id="saText"></div>
+    </div>
+  </section>
+
+  <!-- AI ASSISTANT -->
+  <section class="ai-section">
+    <div class="ai-orb-container">
+      <div class="ai-orb">
+        <div class="ai-orb-ring aor1"></div>
+        <div class="ai-orb-ring aor2"></div>
+        <div class="ai-orb-ring aor3"></div>
+        <div class="ai-orb-core">
+          <div class="ai-face">
+            <div class="ai-eye left"></div>
+            <div class="ai-eye right"></div>
+            <div class="ai-mouth"></div>
+          </div>
+        </div>
+        <div class="ai-wave-ring awr1"></div>
+        <div class="ai-wave-ring awr2"></div>
+        <div class="ai-wave-ring awr3"></div>
+      </div>
+    </div>
+    <div class="ai-dialog">
+      <div class="ai-name-tag">
+        <span class="ai-indicator"></span>
+        AUTO CORE AI
+        <span class="ai-version">v9.1.0</span>
+      </div>
+      <div class="ai-message" id="aiMessage">
+        Ứng viên kỹ sư được phát hiện.
+      </div>
+      <div class="ai-soundwave">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXAM SCHEDULE -->
+  <section class="section" id="schedule">
+    <div class="section-header">
+      <div class="section-tag">// MODULE 02</div>
+      <h2 class="section-title">LỊCH THI THPT 2026</h2>
+      <div class="section-line"></div>
+    </div>
+    <!-- DAY HEADERS -->
+    <div class="schedule-day-header">
+      <div class="sdh-line"></div>
+      <span class="sdh-label">📅 NGÀY 10/06/2026 — THỦ TỤC DỰ THI</span>
+      <div class="sdh-line"></div>
+    </div>
+    <div class="schedule-grid schedule-grid-1">
+
+      <div class="schedule-card sc-procedure">
+        <div class="sc-corner tl"></div>
+        <div class="sc-corner tr"></div>
+        <div class="sc-corner bl"></div>
+        <div class="sc-corner br"></div>
+        <div class="sc-header">
+          <div class="sc-icon">📋</div>
+          <div class="sc-info">
+            <div class="sc-subject">LÀM THỦ TỤC DỰ THI</div>
+            <div class="sc-date">Ngày 10/06/2026 — Buổi chiều</div>
+          </div>
+          <div class="sc-badge sc-badge-pre">PRE</div>
+        </div>
+        <div class="sc-details">
+          <div class="sc-row"><span>Thời gian:</span><span class="sc-val">14:00 – 16:30</span></div>
+          <div class="sc-row"><span>Nội dung:</span><span class="sc-val">Nhận phòng thi, thẻ dự thi</span></div>
+          <div class="sc-row"><span>Lưu ý:</span><span class="sc-val">Mang đầy đủ giấy tờ</span></div>
+        </div>
+        <div class="sc-countdown-mini">
+          <span class="scm-label">ĐANG ĐẾM:</span>
+          <span class="scm-val" data-target="2026-06-10T14:00:00">--:--:--</span>
+        </div>
+        <div class="sc-energy-bar"><div class="sc-energy-fill"></div></div>
+      </div>
+
+    </div>
+
+    <div class="schedule-day-header">
+      <div class="sdh-line"></div>
+      <span class="sdh-label">⚔ NGÀY 11/06/2026 — NGÀY THI ĐẦU TIÊN</span>
+      <div class="sdh-line"></div>
+    </div>
+    <div class="schedule-grid">
+
+      <div class="schedule-card sc-literature">
+        <div class="sc-corner tl"></div>
+        <div class="sc-corner tr"></div>
+        <div class="sc-corner bl"></div>
+        <div class="sc-corner br"></div>
+        <div class="sc-header">
+          <div class="sc-icon">✍</div>
+          <div class="sc-info">
+            <div class="sc-subject">NGỮ VĂN</div>
+            <div class="sc-date">11/06/2026 — Buổi sáng</div>
+          </div>
+          <div class="sc-badge">BẮT BUỘC</div>
+        </div>
+        <div class="sc-details">
+          <div class="sc-row"><span>Giờ bắt đầu:</span><span class="sc-val">07:35</span></div>
+          <div class="sc-row"><span>Thời lượng:</span><span class="sc-val">120 phút</span></div>
+          <div class="sc-row"><span>Hình thức:</span><span class="sc-val">Tự luận</span></div>
+        </div>
+        <div class="sc-countdown-mini">
+          <span class="scm-label">ĐANG ĐẾM:</span>
+          <span class="scm-val" data-target="2026-06-11T07:35:00">--:--:--</span>
+        </div>
+        <div class="sc-energy-bar"><div class="sc-energy-fill"></div></div>
+      </div>
+
+      <div class="schedule-card sc-math">
+        <div class="sc-corner tl"></div>
+        <div class="sc-corner tr"></div>
+        <div class="sc-corner bl"></div>
+        <div class="sc-corner br"></div>
+        <div class="sc-header">
+          <div class="sc-icon">∑</div>
+          <div class="sc-info">
+            <div class="sc-subject">TOÁN HỌC ⭐</div>
+            <div class="sc-date">11/06/2026 — Buổi chiều</div>
+          </div>
+          <div class="sc-badge">A1</div>
+        </div>
+        <div class="sc-details">
+          <div class="sc-row"><span>Giờ bắt đầu:</span><span class="sc-val">14:30</span></div>
+          <div class="sc-row"><span>Thời lượng:</span><span class="sc-val">90 phút</span></div>
+          <div class="sc-row"><span>Hình thức:</span><span class="sc-val">Tự luận</span></div>
+        </div>
+        <div class="sc-countdown-mini">
+          <span class="scm-label">ĐANG ĐẾM:</span>
+          <span class="scm-val" data-target="2026-06-11T14:30:00">--:--:--</span>
+        </div>
+        <div class="sc-energy-bar"><div class="sc-energy-fill"></div></div>
+      </div>
+
+    </div>
+
+    <div class="schedule-day-header">
+      <div class="sdh-line"></div>
+      <span class="sdh-label">🔬 NGÀY 12/06/2026 — NGÀY THI THỨ HAI (KHỐI A1)</span>
+      <div class="sdh-line"></div>
+    </div>
+    <div class="schedule-grid">
+
+      <div class="schedule-card sc-physics">
+        <div class="sc-corner tl"></div>
+        <div class="sc-corner tr"></div>
+        <div class="sc-corner bl"></div>
+        <div class="sc-corner br"></div>
+        <div class="sc-header">
+          <div class="sc-icon">⚡</div>
+          <div class="sc-info">
+            <div class="sc-subject">VẬT LÍ ⭐</div>
+            <div class="sc-date">12/06/2026 — Buổi sáng</div>
+          </div>
+          <div class="sc-badge">A1</div>
+        </div>
+        <div class="sc-details">
+          <div class="sc-row"><span>Giờ bắt đầu:</span><span class="sc-val">07:35</span></div>
+          <div class="sc-row"><span>Thời lượng:</span><span class="sc-val">50 phút</span></div>
+          <div class="sc-row"><span>Hình thức:</span><span class="sc-val">Trắc nghiệm</span></div>
+        </div>
+        <div class="sc-countdown-mini">
+          <span class="scm-label">ĐANG ĐẾM:</span>
+          <span class="scm-val" data-target="2026-06-12T07:35:00">--:--:--</span>
+        </div>
+        <div class="sc-energy-bar"><div class="sc-energy-fill"></div></div>
+      </div>
+
+      <div class="schedule-card sc-english">
+        <div class="sc-corner tl"></div>
+        <div class="sc-corner tr"></div>
+        <div class="sc-corner bl"></div>
+        <div class="sc-corner br"></div>
+        <div class="sc-header">
+          <div class="sc-icon">🌐</div>
+          <div class="sc-info">
+            <div class="sc-subject">TIẾNG ANH ⭐</div>
+            <div class="sc-date">12/06/2026 — Buổi chiều</div>
+          </div>
+          <div class="sc-badge">A1</div>
+        </div>
+        <div class="sc-details">
+          <div class="sc-row"><span>Giờ bắt đầu:</span><span class="sc-val">14:30</span></div>
+          <div class="sc-row"><span>Thời lượng:</span><span class="sc-val">50 phút</span></div>
+          <div class="sc-row"><span>Hình thức:</span><span class="sc-val">Trắc nghiệm</span></div>
+        </div>
+        <div class="sc-countdown-mini">
+          <span class="scm-label">ĐANG ĐẾM:</span>
+          <span class="scm-val" data-target="2026-06-12T14:30:00">--:--:--</span>
+        </div>
+        <div class="sc-energy-bar"><div class="sc-energy-fill"></div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ENGINEER STATUS -->
+  <section class="section" id="status">
+    <div class="section-header">
+      <div class="section-tag">// MODULE 03</div>
+      <h2 class="section-title">ENGINEER STATUS</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="status-grid">
+      <div class="status-panel">
+        <div class="sp-header">
+          <span class="sp-icon">◈</span>
+          <span>PHÙNG ĐÔN KIÊN</span>
+          <span class="sp-rank rank-s">RANK S</span>
+        </div>
+        <div class="sp-avatar">
+          <div class="spa-ring r1"></div>
+          <div class="spa-ring r2"></div>
+          <div class="spa-core">KỸ SƯ<br/>2026</div>
+        </div>
+        <div class="sp-xp">
+          <div class="sp-xp-label">TOTAL XP</div>
+          <div class="sp-xp-val" id="totalXP">0</div>
+          <div class="sp-xp-bar">
+            <div class="sp-xp-fill" id="xpBarFill"></div>
+          </div>
+          <div class="sp-xp-sub">Next Level: 10000 XP</div>
+        </div>
+      </div>
+
+      <div class="skills-panel">
+        <div class="skill-item" data-value="82">
+          <div class="skill-header">
+            <span class="skill-name">⚡ LOGIC</span>
+            <span class="skill-rank rank-s">RANK S</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="--target: 82%"></div>
+          </div>
+          <span class="skill-pct">82</span>
+        </div>
+        <div class="skill-item" data-value="75">
+          <div class="skill-header">
+            <span class="skill-name">🎯 TẬP TRUNG</span>
+            <span class="skill-rank rank-a">RANK A</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="--target: 75%"></div>
+          </div>
+          <span class="skill-pct">75</span>
+        </div>
+        <div class="skill-item" data-value="88">
+          <div class="skill-header">
+            <span class="skill-name">⚖ KỶ LUẬT</span>
+            <span class="skill-rank rank-s">RANK S</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="--target: 88%"></div>
+          </div>
+          <span class="skill-pct">88</span>
+        </div>
+        <div class="skill-item" data-value="79">
+          <div class="skill-header">
+            <span class="skill-name">∑ KỸ NĂNG TOÁN</span>
+            <span class="skill-rank rank-a">RANK A+</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="--target: 79%"></div>
+          </div>
+          <span class="skill-pct">79</span>
+        </div>
+        <div class="skill-item" data-value="71">
+          <div class="skill-header">
+            <span class="skill-name">⚡ KỸ NĂNG VẬT LÍ</span>
+            <span class="skill-rank rank-a">RANK A</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="--target: 71%"></div>
+          </div>
+          <span class="skill-pct">71</span>
+        </div>
+        <div class="skill-item" data-value="65">
+          <div class="skill-header">
+            <span class="skill-name">🌐 TIẾNG ANH</span>
+            <span class="skill-rank rank-b">RANK B+</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="--target: 65%"></div>
+          </div>
+          <span class="skill-pct">65</span>
+        </div>
+        <div class="skill-item" data-value="90">
+          <div class="skill-header">
+            <span class="skill-name">🔧 GIẢI QUYẾT VẤN ĐỀ</span>
+            <span class="skill-rank rank-s">RANK S+</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="--target: 90%"></div>
+          </div>
+          <span class="skill-pct">90</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAILY MISSIONS -->
+  <section class="section" id="missions">
+    <div class="section-header">
+      <div class="section-tag">// MODULE 04</div>
+      <h2 class="section-title">NHIỆM VỤ HẰNG NGÀY</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="missions-container">
+      <div class="mission-item" id="m1">
+        <div class="mi-checkbox" onclick="toggleMission('m1', 50, 10, 5)">
+          <div class="mi-check-inner"></div>
+        </div>
+        <div class="mi-content">
+          <div class="mi-title">Giải 20 bài Toán</div>
+          <div class="mi-desc">Luyện đề thi thử — Tích phân, Giải tích, Hình học</div>
+        </div>
+        <div class="mi-rewards">
+          <span class="mi-xp">+50 XP</span>
+          <span class="mi-bonus">+10 Focus</span>
+        </div>
+        <div class="mi-glow-line"></div>
+      </div>
+
+      <div class="mission-item" id="m2">
+        <div class="mi-checkbox" onclick="toggleMission('m2', 40, 0, 8)">
+          <div class="mi-check-inner"></div>
+        </div>
+        <div class="mi-content">
+          <div class="mi-title">Học Lý 90 phút</div>
+          <div class="mi-desc">Điện từ, Dao động, Sóng ánh sáng</div>
+        </div>
+        <div class="mi-rewards">
+          <span class="mi-xp">+40 XP</span>
+          <span class="mi-bonus">+8 Discipline</span>
+        </div>
+        <div class="mi-glow-line"></div>
+      </div>
+
+      <div class="mission-item" id="m3">
+        <div class="mi-checkbox" onclick="toggleMission('m3', 30, 5, 0)">
+          <div class="mi-check-inner"></div>
+        </div>
+        <div class="mi-content">
+          <div class="mi-title">Học 15 từ vựng Anh</div>
+          <div class="mi-desc">Từ vựng chuyên ngành kỹ thuật & học thuật</div>
+        </div>
+        <div class="mi-rewards">
+          <span class="mi-xp">+30 XP</span>
+          <span class="mi-bonus">+5 Focus</span>
+        </div>
+        <div class="mi-glow-line"></div>
+      </div>
+
+      <div class="mission-item" id="m4">
+        <div class="mi-checkbox" onclick="toggleMission('m4', 20, 0, 10)">
+          <div class="mi-check-inner"></div>
+        </div>
+        <div class="mi-content">
+          <div class="mi-title">Ngủ trước 11 giờ đêm</div>
+          <div class="mi-desc">Phục hồi não bộ — Tối ưu hiệu suất học tập</div>
+        </div>
+        <div class="mi-rewards">
+          <span class="mi-xp">+20 XP</span>
+          <span class="mi-bonus">+10 Discipline</span>
+        </div>
+        <div class="mi-glow-line"></div>
+      </div>
+
+      <div class="missions-total">
+        <div class="mt-label">TỔNG XP HÔM NAY</div>
+        <div class="mt-value" id="missionXP">0 / 140 XP</div>
+        <div class="mt-bar">
+          <div class="mt-bar-fill" id="missionXPBar"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOTIVATION QUOTES -->
+  <section class="quote-section">
+    <div class="quote-bg-grid"></div>
+    <div class="quote-container">
+      <div class="quote-icon">❝</div>
+      <div class="quote-text" id="quoteText"></div>
+      <div class="quote-author">— AUTO CORE AI</div>
+      <div class="quote-dots">
+        <span class="qd active" onclick="setQuote(0)"></span>
+        <span class="qd" onclick="setQuote(1)"></span>
+        <span class="qd" onclick="setQuote(2)"></span>
+        <span class="qd" onclick="setQuote(3)"></span>
+      </div>
+    </div>
+    <div class="quote-particles" id="quoteParticles"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="cyber-footer">
+    <div class="footer-line"></div>
+    <div class="footer-content">
+      <div class="footer-logo">⚙</div>
+      <div class="footer-text">
+        Designed for <span class="footer-name">Phùng Đôn Kiên</span> — Kỹ sư Tự động hóa tương lai
+      </div>
+      <div class="footer-sys">SYSTEM v2.6.0 — THPT 2026</div>
+    </div>
+    <div class="footer-line"></div>
+  </footer>
+
+</div><!-- end mainSite -->
+
+<!-- XP POPUP -->
+<div id="xpPopup" class="xp-popup hidden">
+  <span id="xpPopupText">+50 XP</span>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
